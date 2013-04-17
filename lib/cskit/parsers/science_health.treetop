@@ -1,0 +1,59 @@
+# encoding: UTF-8
+
+require 'pry'
+require 'pry-nav'
+
+module CSKit
+  module Parsers
+
+    grammar ScienceHealth
+      rule citation
+        page ":" lines {
+          def content
+            [page.content, lines.content]
+          end
+        }
+      end
+
+      rule page
+        [\d{1,3}|vi{2}|xi{1,2}|i{0,1}x]+ {
+          def content
+            [:page, text_value]
+          end
+        }
+      end
+
+      rule lines
+        ((multi_line / line_number) ","?)* {
+          def content
+            [:lines, elements.map { |e| e.content if e.respond_to?(:content) }]
+          end
+        }
+      end
+
+      rule multi_line
+        (line_number "-" line_number) {
+          def content
+            start, finish = case elements.size
+              when 1 then [elements[0], nil]
+              when 3 then [elements[0].content, elements[2].content]
+              else
+                raise "Illegal line numbers found."
+            end
+
+            [[:start, start], [:finish, finish]]
+          end
+        }
+      end
+
+      rule line_number
+        [\d{1,2}] {
+          def content
+            text_value.to_i
+          end
+        }
+      end
+    end
+
+  end
+end

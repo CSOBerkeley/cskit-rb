@@ -1,0 +1,31 @@
+PATH
+  remote: .
+  specs:
+    cskit (1.0.0)
+
+GEM
+  remote: http://rubygems.org/
+  specs:
+    coderay (1.0.8)
+    method_source (0.8.1)
+    polyglot (0.3.3)
+    pry (0.9.11.3)
+      coderay (~> 1.0.5)
+      method_source (~> 0.8)
+      slop (~> 3.4)
+    pry-nav (0.2.3)
+      pry (~> 0.9.10)
+    slop (3.4.3)
+    treetop (1.4.12)
+      polyglot
+      polyglot (>= 0.3.1)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  cskit!
+  polyglot
+  pry
+  pry-nav
+  treetop

@@ -1,0 +1,4 @@
+#! /usr/bin/env ruby
+
+system "tt ./lib/cskit/parsers/science_health.treetop"
+system %Q|bundle exec ruby -e "require 'pry'; require 'pry-nav'; require 'cskit'; p = CSKit::Parsers::ScienceHealthParser.new; binding.pry;"|
