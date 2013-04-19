@@ -1,7 +1,7 @@
 # encoding: UTF-8
 
 require 'cskit/parsers/bible/nodes'
-# require 'cskit/parsers/bible/objects'
+require 'cskit/parsers/bible/objects'
 
 module CSKit
   module Parsers
@@ -24,7 +24,7 @@ module CSKit
       end
 
       rule verse
-        (compound_verse_number / verse_number) start_fragment to <VerseNode>
+        (compound_verse_number / verse_number) start_fragment terminator <VerseNode>
       end
 
       rule compound_verse_number
@@ -43,8 +43,8 @@ module CSKit
         [^\(\)]+ <FragmentNode>
       end
 
-      rule to
-        ("(" [\s]* "to" [\s]* cardinality [\s]* fragment [\s]* ")")? <ToNode>
+      rule terminator
+        ("(" [\s]* "to" [\s]* cardinality [\s]* fragment [\s]* ")" <TerminatorNode>)?
       end
 
       rule cardinality

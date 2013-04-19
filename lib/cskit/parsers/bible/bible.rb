@@ -4,7 +4,7 @@
 # encoding: UTF-8
 
 require 'cskit/parsers/bible/nodes'
-# require 'cskit/parsers/bible/objects'
+require 'cskit/parsers/bible/objects'
 
 module CSKit
   module Parsers
@@ -276,7 +276,7 @@ module CSKit
           elements[1]
         end
 
-        def to
+        def terminator
           elements[2]
         end
       end
@@ -311,7 +311,7 @@ module CSKit
           r4 = _nt_start_fragment
           s0 << r4
           if r4
-            r5 = _nt_to
+            r5 = _nt_terminator
             s0 << r5
           end
         end
@@ -512,7 +512,7 @@ module CSKit
         r0
       end
 
-      module To0
+      module Terminator0
         def cardinality
           elements[4]
         end
@@ -523,10 +523,10 @@ module CSKit
 
       end
 
-      def _nt_to
+      def _nt_terminator
         start_index = index
-        if node_cache[:to].has_key?(index)
-          cached = node_cache[:to][index]
+        if node_cache[:terminator].has_key?(index)
+          cached = node_cache[:terminator][index]
           if cached
             cached = SyntaxNode.new(input, index...(index + 1)) if cached == true
             @index = cached.interval.end
@@ -644,8 +644,8 @@ module CSKit
           end
         end
         if s1.last
-          r1 = instantiate_node(SyntaxNode,input, i1...index, s1)
-          r1.extend(To0)
+          r1 = instantiate_node(TerminatorNode,input, i1...index, s1)
+          r1.extend(Terminator0)
         else
           @index = i1
           r1 = nil
@@ -656,7 +656,7 @@ module CSKit
           r0 = instantiate_node(SyntaxNode,input, index...index)
         end
 
-        node_cache[:to][start_index] = r0
+        node_cache[:terminator][start_index] = r0
 
         r0
       end
