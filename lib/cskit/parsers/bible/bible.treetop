@@ -1,0 +1,56 @@
+# encoding: UTF-8
+
+require 'cskit/parsers/bible/nodes'
+# require 'cskit/parsers/bible/objects'
+
+module CSKit
+  module Parsers
+
+    grammar Bible
+      rule citation
+        book [\s]* chapter ":" verse_list <CitationNode>
+      end
+
+      rule book
+        [\w\.]+ <BookNode>
+      end
+
+      rule chapter
+        [\d]+ <ChapterNode>
+      end
+
+      rule verse_list
+        verse ([\s]* "," [\s]* verse_list)? <VerseListNode>
+      end
+
+      rule verse
+        (compound_verse_number / verse_number) start_fragment to <VerseNode>
+      end
+
+      rule compound_verse_number
+        verse_number [\s]* "-" [\s]* verse_number <CompoundVerseNumberNode>
+      end
+
+      rule verse_number
+        [\d]+ <VerseNumberNode>
+      end
+
+      rule start_fragment
+        fragment? <FragmentNode>
+      end
+
+      rule fragment
+        [^\(\)]+ <FragmentNode>
+      end
+
+      rule to
+        ("(" [\s]* "to" [\s]* cardinality [\s]* fragment [\s]* ")")? <ToNode>
+      end
+
+      rule cardinality
+        ("1st" / "2nd" / "3rd")?
+      end
+    end
+
+  end
+end

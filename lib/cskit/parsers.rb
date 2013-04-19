@@ -2,7 +2,7 @@
 
 module CSKit
   module Parsers
-    autoload :ScienceHealthParser, "cskit/parsers/science_health"
-    # autoload :BibleParser,         "cskit/parsers/bible_parser"
+    autoload :ScienceHealthParser, "cskit/parsers/science_health/science_health"
+    autoload :BibleParser,         "cskit/parsers/bible/bible"
   end
 end
