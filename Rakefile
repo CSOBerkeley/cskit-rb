@@ -10,6 +10,4 @@ require 'digest'
 
 require 'rubygems/package_task'
 
-require './lib/cskit'
-
 Bundler::GemHelper.install_tasks
