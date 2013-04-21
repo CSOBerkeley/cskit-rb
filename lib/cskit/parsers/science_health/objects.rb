@@ -1,3 +1,5 @@
+# encoding: UTF-8
+
 module CSKit
   module Parsers
     module ScienceHealth

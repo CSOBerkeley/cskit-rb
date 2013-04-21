@@ -2,11 +2,13 @@ PATH
   remote: .
   specs:
     cskit (1.0.0)
+      json
 
 GEM
   remote: http://rubygems.org/
   specs:
     coderay (1.0.9)
+    json (1.7.6)
     method_source (0.8.1)
     polyglot (0.3.3)
     pry (0.9.12)

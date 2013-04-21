@@ -1,4 +1,0 @@
-#! /usr/bin/env bash
-
-tt ./lib/cskit/parsers/bible/bible.treetop
-bundle exec ruby -e "require 'pry'; require 'pry-nav'; require 'cskit'; p = CSKit::Parsers::BibleParser.new; binding.pry"

@@ -15,12 +15,14 @@ Gem::Specification.new do |s|
   s.platform = Gem::Platform::RUBY
   s.has_rdoc = true
 
-  s.add_development_dependency 'treetop'
-  s.add_development_dependency 'polyglot'
+  s.add_dependency 'json'
+  s.add_dependency 'treetop'
+
+  s.add_development_dependency 'rake'
 
   s.require_path = 'lib'
 
-  gem_files       = Dir["{lib,spec,resources}/**/*", "Gemfile", "History.txt", "LICENSE", "NOTICE", "README.md", "Rakefile", "twitter_cldr.gemspec"]
+  gem_files       = Dir["{lib,spec,resources}/**/*", "Gemfile", "History.txt", "LICENSE", "README.md", "Rakefile", "cskit.gemspec"]
   versioned_files = `git ls-files`.split("\n")
 
   s.files = gem_files & versioned_files
