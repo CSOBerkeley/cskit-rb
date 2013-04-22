@@ -16,13 +16,15 @@ module CSKit
     end
 
     def get_book(book_id)
-      available_books[book_id]
+      available_books[book_id] || get_book_for_type(book_id)
     end
 
     def get_book_for_type(type)
-      available_books.find do |book|
+      found_book = available_books.find do |book_id, book|
         book.config[:type] == type
       end
+
+      found_book.last if found_book
     end
 
     def book_available?(book_id)

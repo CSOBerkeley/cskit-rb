@@ -18,7 +18,7 @@ module CSKit
 
       def get_page(page_number)
         resource_file = File.join(resource_path, "#{page_number}.json")
-        page_cache[page_number] = Page.from_hash(JSON.parse(File.read(resource_file)))
+        page_cache[page_number] ||= Page.from_hash(JSON.parse(File.read(resource_file)))
       end
 
       def get_line(line_number, page_number)
