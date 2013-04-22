@@ -22,7 +22,7 @@ module CSKit
 
         if File.directory?(book_resource_path)
           Bible::Book.new(book_name, Dir.glob(File.join(book_resource_path, "**")).map.with_index do |resource_file, index|
-            get_chapter(book_name, index + 1)
+            get_chapter(index + 1, book_name)
           end)
         else
           nil
