@@ -47,7 +47,7 @@ module CSKit
       end
 
       def chapter_cache
-        @page_cache ||= {}
+        @chapter_cache ||= {}
       end
 
     end
