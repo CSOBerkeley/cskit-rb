@@ -273,11 +273,11 @@ module CSKit
 
       module Verse0
         def start_fragment
-          elements[1]
+          elements[2]
         end
 
         def terminator
-          elements[2]
+          elements[4]
         end
       end
 
@@ -308,11 +308,47 @@ module CSKit
         end
         s0 << r1
         if r1
-          r4 = _nt_start_fragment
+          s4, i4 = [], index
+          loop do
+            if has_terminal?('\G[\\s]', true, index)
+              r5 = true
+              @index += 1
+            else
+              r5 = nil
+            end
+            if r5
+              s4 << r5
+            else
+              break
+            end
+          end
+          r4 = instantiate_node(SyntaxNode,input, i4...index, s4)
           s0 << r4
           if r4
-            r5 = _nt_terminator
-            s0 << r5
+            r6 = _nt_start_fragment
+            s0 << r6
+            if r6
+              s7, i7 = [], index
+              loop do
+                if has_terminal?('\G[\\s]', true, index)
+                  r8 = true
+                  @index += 1
+                else
+                  r8 = nil
+                end
+                if r8
+                  s7 << r8
+                else
+                  break
+                end
+              end
+              r7 = instantiate_node(SyntaxNode,input, i7...index, s7)
+              s0 << r7
+              if r7
+                r9 = _nt_terminator
+                s0 << r9
+              end
+            end
           end
         end
         if s0.last
@@ -463,7 +499,26 @@ module CSKit
           return cached
         end
 
-        r1 = _nt_fragment
+        s1, i1 = [], index
+        loop do
+          if has_terminal?('\G[^\\(\\)\\,]', true, index)
+            r2 = true
+            @index += 1
+          else
+            r2 = nil
+          end
+          if r2
+            s1 << r2
+          else
+            break
+          end
+        end
+        if s1.empty?
+          @index = i1
+          r1 = nil
+        else
+          r1 = instantiate_node(FragmentNode,input, i1...index, s1)
+        end
         if r1
           r0 = r1
         else

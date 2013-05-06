@@ -12,10 +12,6 @@ module CSKit
         @resource_path = resource_path
       end
 
-      def text_for(citation)
-        "TBD"
-      end
-
       def get_book(book_name)
         converted_book_name = convert_book_name(book_name)
         book_resource_path = File.join(resource_path, converted_book_name)
@@ -40,7 +36,40 @@ module CSKit
         get_page(page_number).lines[line_number - 1]
       end
 
+      def text_for(citation)
+        unless citation.is_a?(CSKit::Parsers::Bible::Citation)
+          raise "Invalid type of citation, expected instance of Bible::Citation."
+        end
+
+        chapter = get_chapter(citation.chapter, citation.book)
+        text_for_chapter(chapter, citation).join(" ")
+      end
+
       protected
+
+      def text_for_chapter(chapter, citation)
+        citation.verse_list.inject([]) do |text, citation_verse|
+          citation_verse.start.upto(citation_verse.finish) do |i|
+            verse_text = chapter.verses[i - 1].text
+
+            if citation_verse.start_fragment
+              verse_text = verse_text[verse_text.index(citation_verse.start_fragment)..-1]
+            end
+
+            if citation_verse.terminator
+              stop_pos = (0...citation_verse.terminator.cardinality).inject(-1) do |last_index, _|
+                verse_text.index(citation_verse.terminator.fragment, last_index + 1)
+              end
+
+              verse_text = verse_text[0..stop_pos]
+            end
+
+            text << "#{i} #{verse_text}"
+          end
+
+          text
+        end
+      end
 
       def convert_book_name(book_name)
         book_name.downcase.gsub(" ", "_")

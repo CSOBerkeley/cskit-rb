@@ -63,8 +63,8 @@ module CSKit
           CSKit::Parsers::Bible::Verse.new(
             line_numbers.first,
             line_numbers.last,
-            start_fragment.value,
-            terminator.to_object
+            (start_fragment.value rescue nil),
+            (terminator.to_object rescue nil)
           )
         end
       end
@@ -77,7 +77,7 @@ module CSKit
 
       class VerseNumberNode < Treetop::Runtime::SyntaxNode
         def to_sexp
-          [[text_value.to_i, nil]]
+          [[text_value.to_i, text_value.to_i]]
         end
       end
 

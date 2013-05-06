@@ -14,7 +14,7 @@ module CSKit
     end
 
     def text_for(citation)
-      
+      reader.text_for(citation)
     end
 
     def parser

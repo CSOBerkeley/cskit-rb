@@ -3,12 +3,26 @@ PATH
   specs:
     cskit (1.0.0)
       json
+      treetop
+
+PATH
+  remote: ~/workspace/cskit-biblekjv-rb
+  specs:
+    cskit-biblekjv (1.0.0)
+      json
+
+PATH
+  remote: ~/workspace/cskit-shkts-rb
+  specs:
+    cskit-shkts (1.0.0)
+      cskit (~> 1.0.0)
+      json
 
 GEM
   remote: http://rubygems.org/
   specs:
     coderay (1.0.9)
-    json (1.7.6)
+    json (1.7.7)
     method_source (0.8.1)
     polyglot (0.3.3)
     pry (0.9.12)
@@ -17,6 +31,7 @@ GEM
       slop (~> 3.4)
     pry-nav (0.2.3)
       pry (~> 0.9.10)
+    rake (10.0.4)
     slop (3.4.3)
     treetop (1.4.12)
       polyglot
@@ -27,7 +42,8 @@ PLATFORMS
 
 DEPENDENCIES
   cskit!
-  polyglot
+  cskit-biblekjv!
+  cskit-shkts!
   pry
   pry-nav
-  treetop
+  rake

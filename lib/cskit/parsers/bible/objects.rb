@@ -5,7 +5,7 @@ module CSKit
     module Bible
 
       Citation = Struct.new(:book, :chapter, :verse_list)
-      Verse = Struct.new(:start, :finish, :fragment, :terminator)
+      Verse = Struct.new(:start, :finish, :start_fragment, :terminator)
       Terminator = Struct.new(:cardinality, :fragment)
 
     end
