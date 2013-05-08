@@ -20,7 +20,7 @@ module CSKit
       end
 
       rule line
-        (compound_line_number / line_number) (only / fragment)? <LineNode>
+        (compound_line_number / line_number) (only / start_fragment)? <LineNode>
       end
 
       rule compound_line_number
@@ -35,8 +35,8 @@ module CSKit
         [\s]* "(" [\s]* "only" [\s]* ")" [\s]* <OnlyNode>
       end
 
-      rule fragment
-        [^,]+ <FragmentNode>
+      rule start_fragment
+        [^,]+ <StartFragmentNode>
       end
     end
 

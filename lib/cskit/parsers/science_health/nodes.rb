@@ -71,7 +71,7 @@ module CSKit
         end
       end
 
-      class FragmentNode < Treetop::Runtime::SyntaxNode
+      class StartFragmentNode < Treetop::Runtime::SyntaxNode
         def to_sexp
           text_value.strip
         end

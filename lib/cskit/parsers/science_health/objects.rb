@@ -6,7 +6,7 @@ module CSKit
 
       Citation = Struct.new(:page, :lines)
 
-      Line = Struct.new(:start, :finish, :only, :fragment) do
+      Line = Struct.new(:start, :finish, :only, :start_fragment) do
         alias :only? :only
       end
 

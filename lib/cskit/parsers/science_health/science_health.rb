@@ -279,7 +279,7 @@ module CSKit
           if r6
             r5 = r6
           else
-            r7 = _nt_fragment
+            r7 = _nt_start_fragment
             if r7
               r5 = r7
             else
@@ -559,10 +559,10 @@ module CSKit
         r0
       end
 
-      def _nt_fragment
+      def _nt_start_fragment
         start_index = index
-        if node_cache[:fragment].has_key?(index)
-          cached = node_cache[:fragment][index]
+        if node_cache[:start_fragment].has_key?(index)
+          cached = node_cache[:start_fragment][index]
           if cached
             cached = SyntaxNode.new(input, index...(index + 1)) if cached == true
             @index = cached.interval.end
@@ -588,10 +588,10 @@ module CSKit
           @index = i0
           r0 = nil
         else
-          r0 = instantiate_node(FragmentNode,input, i0...index, s0)
+          r0 = instantiate_node(StartFragmentNode,input, i0...index, s0)
         end
 
-        node_cache[:fragment][start_index] = r0
+        node_cache[:start_fragment][start_index] = r0
 
         r0
       end

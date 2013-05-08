@@ -37,16 +37,14 @@ module CSKit
       end
 
       def text_for(citation)
-        unless citation.is_a?(CSKit::Parsers::Bible::Citation)
-          raise "Invalid type of citation, expected instance of Bible::Citation."
-        end
-
         chapter = get_chapter(citation.chapter, citation.book)
         text_for_chapter(chapter, citation).join(" ")
       end
 
       protected
 
+      # @TODO: extract formatting functionality into a Formatter class.
+      # Formatting should not be the Reader's responsibility
       def text_for_chapter(chapter, citation)
         citation.verse_list.inject([]) do |text, citation_verse|
           citation_verse.start.upto(citation_verse.finish) do |i|
