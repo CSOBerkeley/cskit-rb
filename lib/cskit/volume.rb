@@ -1,7 +1,7 @@
 # encoding: UTF-8
 
 module CSKit
-  class Book
+  class Volume
 
     attr_reader :config
 
@@ -13,8 +13,8 @@ module CSKit
       parser.parse(citation_text).to_object
     end
 
-    def text_for(citation)
-      reader.text_for(citation)
+    def readings_for(citation)
+      reader.readings_for(citation)
     end
 
     def parser
@@ -22,7 +22,11 @@ module CSKit
     end
 
     def reader
-      @reader ||= config[:reader].new(config[:resource_path])
+      @reader ||= config[:reader].new(self)
+    end
+
+    def resource_path
+      config[:resource_path]
     end
 
   end

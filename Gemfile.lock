@@ -9,6 +9,7 @@ PATH
   remote: ~/workspace/cskit-biblekjv-rb
   specs:
     cskit-biblekjv (1.0.0)
+      cskit (~> 1.0.0)
       json
 
 PATH

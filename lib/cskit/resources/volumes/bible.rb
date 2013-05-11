@@ -1,7 +1,7 @@
 # encoding: UTF-8
 
 module CSKit
-  module Books
+  module Volumes
     module Bible
 
       Book = Struct.new(:name, :chapters) do

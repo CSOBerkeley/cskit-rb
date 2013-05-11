@@ -1,7 +1,7 @@
 # encoding: UTF-8
 
 module CSKit
-  module Books
+  module Volumes
     module ScienceHealth
 
       Page = Struct.new(:number, :lines) do

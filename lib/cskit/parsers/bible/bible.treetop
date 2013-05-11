@@ -8,7 +8,11 @@ module CSKit
 
     grammar Bible
       rule citation
-        book [\s]* chapter ":" verse_list <CitationNode>
+        book [\s]* chapter_list <CitationNode>
+      end
+
+      rule chapter_list
+        chapter ([\s]* ";" [\s]* chapter_list)? <ChapterListNode>
       end
 
       rule book
@@ -16,7 +20,7 @@ module CSKit
       end
 
       rule chapter
-        [\d]+ <ChapterNode>
+        [\d]+ [\s]* ":" [\s]* verse_list <ChapterNode>
       end
 
       rule verse_list
@@ -36,7 +40,7 @@ module CSKit
       end
 
       rule start_fragment
-        ([^\(\)\,]+ <FragmentNode>)?
+        ([^\(\)\,\;]+ <FragmentNode>)?
       end
 
       rule fragment

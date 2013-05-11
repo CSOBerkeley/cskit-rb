@@ -1,26 +1,17 @@
 # encoding: UTF-8
 
-include CSKit::Books::ScienceHealth
-
 module CSKit
   module Readers
     class ScienceHealthReader
 
-      # semicolon, question mark, or period
-      SENTENCE_TERMINATOR_REGEX = /[;\?\.]/
+      attr_reader :volume
 
-      # either a period + space or start of line followed by the first capital letter or number.
-      SENTENCE_START_REGEX = /(\.\s+|^)[A-Z0-9]/
-
-      attr_reader :resource_path
-
-      def initialize(resource_path)
-        @resource_path = resource_path
+      def initialize(volume)
+        @volume = volume
       end
 
       def get_page(page_number)
-        resource_file = File.join(resource_path, "#{page_number}.json")
-        page_cache[page_number] ||= Page.from_hash(JSON.parse(File.read(resource_file)))
+        volume.get_page(page_number)
       end
 
       def get_line(line_number, page_number)
@@ -67,8 +58,8 @@ module CSKit
         end
       end
 
-      def text_for(citation)
-        citation.lines.inject("") do |ret, citation_line|
+      def readings_for(citation)
+        citation.lines.map do |citation_line|
           lines = if citation_line.finish
             get_line_range(citation_line.start..citation_line.finish, citation.page)
           else
@@ -79,54 +70,8 @@ module CSKit
             end
           end
 
-          ret << format_lines(lines, citation_line).join("\n")
+          Reading.new(lines, citation_line)
         end
-      end
-
-      protected
-
-      # @TODO: extract this functionality into a Formatter class.
-      # Formatting should not be the Reader's responsibility
-      def format_lines(lines, citation_line)
-        lines.each_with_index.map do |line, line_index|
-          line_text = line.text
-
-          line_text = if line_index == 0
-            if citation_line.start_fragment
-              index = line_text.index(citation_line.start_fragment)
-              index ? line_text[index..-1] : line_text
-            else
-              matches = line_text.match(SENTENCE_START_REGEX)
-              if matches.length == 2
-                offset = matches.offset(1)
-                spaces = " " * offset.first  # indent to match physical position in S&H book
-                spaces + line_text[matches.offset(1).last..-1]
-              else
-                line_text
-              end
-            end
-          else
-            line_text
-          end
-
-          line_text = if line_index == (lines.size - 1)
-            index = line_text.index(SENTENCE_TERMINATOR_REGEX)
-            index ? line_text[0..index] : line_text
-          else
-            line_text
-          end
-
-          # indent start of paragraph
-          if line.paragraph_start?
-            "   #{line_text}"
-          else
-            line_text
-          end
-        end
-      end
-
-      def page_cache
-        @page_cache ||= {}
       end
 
     end

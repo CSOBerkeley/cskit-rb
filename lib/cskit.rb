@@ -1,9 +1,11 @@
 # encoding: UTF-8
 
+require 'cskit/formatters'
+require 'cskit/lesson'
 require 'cskit/parsers'
 require 'cskit/readers'
-require 'cskit/book'
-require 'cskit/resources/books'
+require 'cskit/volume'
+require 'cskit/resources/volumes'
 
 require 'treetop'
 require 'json'
@@ -11,28 +13,29 @@ require 'json'
 module CSKit
 
   class << self
-    def register_book(config)
-      available_books[config[:id]] = CSKit::Book.new(config)
+    def register_volume(config)
+      available_volumes[config[:id].to_sym] = config[:volume].new(config)
     end
 
-    def get_book(book_id)
-      available_books[book_id] || get_book_for_type(book_id)
+    def get_volume(volume_id)
+      volume_id = volume_id.to_sym
+      available_volumes[volume_id] || get_volume_for_type(volume_id)
     end
 
-    def get_book_for_type(type)
-      found_book = available_books.find do |book_id, book|
-        book.config[:type] == type
+    def get_volume_for_type(type)
+      found_volume = available_volumes.find do |volume_id, volume|
+        volume.config[:type] == type
       end
 
-      found_book.last if found_book
+      found_volume.last if found_volume
     end
 
-    def book_available?(book_id)
-      available_books.include?(book_id)
+    def volume_available?(volume_id)
+      available_volumes.include?(volume_id)
     end
 
-    def available_books
-      @available_books ||= {}
+    def available_volumes
+      @available_volumes ||= {}
     end
   end
 

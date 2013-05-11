@@ -6,14 +6,13 @@ module CSKit
 
       class CitationNode < Treetop::Runtime::SyntaxNode
         def to_sexp
-          [[:book, book.to_sexp], [:chapter, chapter.to_sexp], [:verses, verse_list.to_sexp]]
+          [[:book, book.to_sexp], [:chapters, chapter_list.to_sexp]]
         end
 
         def to_object
           CSKit::Parsers::Bible::Citation.new(
             book.text_value,
-            chapter.text_value.to_i,
-            verse_list.to_object
+            chapter_list.to_object
           )
         end
       end
@@ -24,9 +23,42 @@ module CSKit
         end
       end
 
-      class ChapterNode < Treetop::Runtime::SyntaxNode
+      class ChapterListNode < Treetop::Runtime::SyntaxNode
         def to_sexp
-          text_value.to_i
+          result = [chapter.to_sexp]
+
+          if elements[1] && elements[1].respond_to?(:chapter_list)
+            result += elements[1].chapter_list.to_sexp
+          end
+
+          result
+        end
+
+        def to_object
+          result = [chapter.to_object]
+
+          if elements[1] && elements[1].respond_to?(:chapter_list)
+            result += elements[1].chapter_list.to_object
+          end
+
+          result
+        end
+      end
+
+      class ChapterNode < Treetop::Runtime::SyntaxNode
+        def text_value
+          super.to_i
+        end
+
+        def to_sexp
+          [text_value, verse_list.to_sexp]
+        end
+
+        def to_object
+          CSKit::Parsers::Bible::Chapter.new(
+            text_value,
+            verse_list.to_object
+          )
         end
       end
 

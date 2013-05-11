@@ -21,12 +21,8 @@ module CSKit
           elements[0]
         end
 
-        def chapter
+        def chapter_list
           elements[2]
-        end
-
-        def verse_list
-          elements[4]
         end
       end
 
@@ -62,22 +58,8 @@ module CSKit
           r2 = instantiate_node(SyntaxNode,input, i2...index, s2)
           s0 << r2
           if r2
-            r4 = _nt_chapter
+            r4 = _nt_chapter_list
             s0 << r4
-            if r4
-              if has_terminal?(":", false, index)
-                r5 = instantiate_node(SyntaxNode,input, index...(index + 1))
-                @index += 1
-              else
-                terminal_parse_failure(":")
-                r5 = nil
-              end
-              s0 << r5
-              if r5
-                r6 = _nt_verse_list
-                s0 << r6
-              end
-            end
           end
         end
         if s0.last
@@ -89,6 +71,110 @@ module CSKit
         end
 
         node_cache[:citation][start_index] = r0
+
+        r0
+      end
+
+      module ChapterList0
+        def chapter_list
+          elements[3]
+        end
+      end
+
+      module ChapterList1
+        def chapter
+          elements[0]
+        end
+
+      end
+
+      def _nt_chapter_list
+        start_index = index
+        if node_cache[:chapter_list].has_key?(index)
+          cached = node_cache[:chapter_list][index]
+          if cached
+            cached = SyntaxNode.new(input, index...(index + 1)) if cached == true
+            @index = cached.interval.end
+          end
+          return cached
+        end
+
+        i0, s0 = index, []
+        r1 = _nt_chapter
+        s0 << r1
+        if r1
+          i3, s3 = index, []
+          s4, i4 = [], index
+          loop do
+            if has_terminal?('\G[\\s]', true, index)
+              r5 = true
+              @index += 1
+            else
+              r5 = nil
+            end
+            if r5
+              s4 << r5
+            else
+              break
+            end
+          end
+          r4 = instantiate_node(SyntaxNode,input, i4...index, s4)
+          s3 << r4
+          if r4
+            if has_terminal?(";", false, index)
+              r6 = instantiate_node(SyntaxNode,input, index...(index + 1))
+              @index += 1
+            else
+              terminal_parse_failure(";")
+              r6 = nil
+            end
+            s3 << r6
+            if r6
+              s7, i7 = [], index
+              loop do
+                if has_terminal?('\G[\\s]', true, index)
+                  r8 = true
+                  @index += 1
+                else
+                  r8 = nil
+                end
+                if r8
+                  s7 << r8
+                else
+                  break
+                end
+              end
+              r7 = instantiate_node(SyntaxNode,input, i7...index, s7)
+              s3 << r7
+              if r7
+                r9 = _nt_chapter_list
+                s3 << r9
+              end
+            end
+          end
+          if s3.last
+            r3 = instantiate_node(SyntaxNode,input, i3...index, s3)
+            r3.extend(ChapterList0)
+          else
+            @index = i3
+            r3 = nil
+          end
+          if r3
+            r2 = r3
+          else
+            r2 = instantiate_node(SyntaxNode,input, index...index)
+          end
+          s0 << r2
+        end
+        if s0.last
+          r0 = instantiate_node(ChapterListNode,input, i0...index, s0)
+          r0.extend(ChapterList1)
+        else
+          @index = i0
+          r0 = nil
+        end
+
+        node_cache[:chapter_list][start_index] = r0
 
         r0
       end
@@ -130,6 +216,12 @@ module CSKit
         r0
       end
 
+      module Chapter0
+        def verse_list
+          elements[4]
+        end
+      end
+
       def _nt_chapter
         start_index = index
         if node_cache[:chapter].has_key?(index)
@@ -141,25 +233,84 @@ module CSKit
           return cached
         end
 
-        s0, i0 = [], index
+        i0, s0 = index, []
+        s1, i1 = [], index
         loop do
           if has_terminal?('\G[\\d]', true, index)
-            r1 = true
+            r2 = true
             @index += 1
           else
-            r1 = nil
+            r2 = nil
           end
-          if r1
-            s0 << r1
+          if r2
+            s1 << r2
           else
             break
           end
         end
-        if s0.empty?
+        if s1.empty?
+          @index = i1
+          r1 = nil
+        else
+          r1 = instantiate_node(SyntaxNode,input, i1...index, s1)
+        end
+        s0 << r1
+        if r1
+          s3, i3 = [], index
+          loop do
+            if has_terminal?('\G[\\s]', true, index)
+              r4 = true
+              @index += 1
+            else
+              r4 = nil
+            end
+            if r4
+              s3 << r4
+            else
+              break
+            end
+          end
+          r3 = instantiate_node(SyntaxNode,input, i3...index, s3)
+          s0 << r3
+          if r3
+            if has_terminal?(":", false, index)
+              r5 = instantiate_node(SyntaxNode,input, index...(index + 1))
+              @index += 1
+            else
+              terminal_parse_failure(":")
+              r5 = nil
+            end
+            s0 << r5
+            if r5
+              s6, i6 = [], index
+              loop do
+                if has_terminal?('\G[\\s]', true, index)
+                  r7 = true
+                  @index += 1
+                else
+                  r7 = nil
+                end
+                if r7
+                  s6 << r7
+                else
+                  break
+                end
+              end
+              r6 = instantiate_node(SyntaxNode,input, i6...index, s6)
+              s0 << r6
+              if r6
+                r8 = _nt_verse_list
+                s0 << r8
+              end
+            end
+          end
+        end
+        if s0.last
+          r0 = instantiate_node(ChapterNode,input, i0...index, s0)
+          r0.extend(Chapter0)
+        else
           @index = i0
           r0 = nil
-        else
-          r0 = instantiate_node(ChapterNode,input, i0...index, s0)
         end
 
         node_cache[:chapter][start_index] = r0
@@ -501,7 +652,7 @@ module CSKit
 
         s1, i1 = [], index
         loop do
-          if has_terminal?('\G[^\\(\\)\\,]', true, index)
+          if has_terminal?('\G[^\\(\\)\\,\\;]', true, index)
             r2 = true
             @index += 1
           else
