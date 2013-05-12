@@ -3,7 +3,7 @@
 module CSKit
   module Readers
 
-    Reading = Struct.new(:text, :citation, :params) do
+    Reading = Struct.new(:texts, :citation) do
       def params
         @params || {}
       end

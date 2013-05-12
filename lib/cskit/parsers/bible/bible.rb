@@ -192,7 +192,7 @@ module CSKit
 
         s0, i0 = [], index
         loop do
-          if has_terminal?('\G[\\w\\.]', true, index)
+          if has_terminal?('\G[a-zA-Z\\.\\s]', true, index)
             r1 = true
             @index += 1
           else

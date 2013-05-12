@@ -19,7 +19,7 @@ module CSKit
 
         def format_readings(readings)
           readings.map do |reading|
-            format_lines(reading.text, reading.citation)
+            format_lines(reading.texts, reading.citation)
           end.join(separator)
         end
 
@@ -35,7 +35,7 @@ module CSKit
                 index ? line_text[index..-1] : line_text
               else
                 matches = line_text.match(SENTENCE_START_REGEX)
-                if matches.length == 2
+                if matches && matches.length == 2
                   offset = matches.offset(1)
                   spaces = " " * offset.first  # indent to match physical position in S&H book
                   spaces + line_text[matches.offset(1).last..-1]

@@ -28,22 +28,23 @@ module CSKit
 
       def readings_for(citation)
         citation.chapter_list.flat_map do |chapter|
-          map_verses_for(chapter, citation.book) do |text, verse, verse_number|
-            Reading.new(text, verse, :verse_number => verse_number)
+          map_verse_texts_for(chapter, citation.book) do |texts, verse|
+            Reading.new(texts, verse)
           end
         end
       end
 
       protected
 
-      def map_verses_for(chapter, book_name)
+      def map_verse_texts_for(chapter, book_name)
         result = []
         chapter_data = get_chapter(chapter.chapter_number, book_name)
         chapter.verse_list.each do |verse|
+          texts = []
           verse.start.upto(verse.finish) do |i|
-            text = chapter_data.verses[i - 1].text
-            result << (yield text, verse, i)
+            texts << chapter_data.verses[i - 1].text
           end
+          result << (yield texts, verse)
         end
         result
       end
@@ -54,7 +55,7 @@ module CSKit
 
       # not sure if the Reader should be responsible for this... consider refactoring at some point
       def unabbreviate(orig_book_name)
-        book_name = orig_book_name.chomp(".")  # remove trailing period
+        book_name = orig_book_name.strip.chomp(".")  # remove trailing period
         regex = /^#{book_name}\w+/
 
         found_book = volume.books.find do |book|

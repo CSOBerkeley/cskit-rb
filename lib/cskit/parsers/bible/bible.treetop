@@ -16,7 +16,7 @@ module CSKit
       end
 
       rule book
-        [\w\.]+ <BookNode>
+        [a-zA-Z\.\s]+ <BookNode>
       end
 
       rule chapter

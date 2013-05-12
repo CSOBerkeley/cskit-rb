@@ -13,20 +13,22 @@ module CSKit
 
         def format_readings(readings)
           readings.map do |reading|
-            format_verse(
-              reading.text,
-              reading.citation,
-              reading.params[:verse_number]
+            format_verse_texts(
+              reading.texts,
+              reading.citation
             )
           end.join(separator)
         end
 
         protected
 
-        def format_verse(text, verse, verse_number)
-          text = format_start_fragment(text, verse.start_fragment)
-          text = format_terminator(text, verse.terminator)
-          include_verse_number? ? "#{verse_number} #{text}" : text
+        def format_verse_texts(texts, verse)
+          texts.each_with_index.map do |text, index|
+            text = format_start_fragment(text, verse.start_fragment) if index == 0
+            text = format_terminator(text, verse.terminator) if index == texts.size - 1
+            verse_number = verse.start + index
+            include_verse_number? ? "#{verse_number} #{text}" : text
+          end.join(separator)
         end
 
         def format_start_fragment(text, start_fragment)

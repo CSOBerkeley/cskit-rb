@@ -24,7 +24,7 @@ module CSKit
           yield get_line(line_number, page_number)
 
           line_number, page_number = if (line_number + 1) > page.lines.size
-            [1, page_number + 1]
+            [1, next_page_number(page_number)]
           else
             [line_number + 1, page_number]
           end
@@ -71,6 +71,21 @@ module CSKit
           end
 
           Reading.new(lines, citation_line)
+        end
+      end
+
+      protected
+
+      def next_page_number(page_number)
+        numerals = ["vi", "vii", "ix", "x", "xi", "xii"]
+        if index = numerals.index(page_number)
+          if index == numerals.size - 1
+            "1"
+          else
+            numerals[index + 1]
+          end
+        else
+          (page_number.to_i + 1).to_s
         end
       end
 
