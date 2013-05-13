@@ -3,7 +3,7 @@
 module CSKit
   module Formatters
     module ScienceHealth
-      class ScienceHealthTextualFormatter
+      class ScienceHealthPlainTextFormatter
 
         attr_reader :options
 
@@ -18,9 +18,15 @@ module CSKit
         end
 
         def format_readings(readings)
-          readings.map do |reading|
-            format_lines(reading.texts, reading.citation)
-          end.join(separator)
+          join(
+            readings.map do |reading|
+              format_lines(reading.texts, reading.citation)
+            end
+          )
+        end
+
+        def join(texts)
+          texts.join(separator)
         end
 
         protected

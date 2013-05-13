@@ -423,7 +423,7 @@ module CSKit
       end
 
       module Verse0
-        def start_fragment
+        def starter
           elements[2]
         end
 
@@ -476,7 +476,7 @@ module CSKit
           r4 = instantiate_node(SyntaxNode,input, i4...index, s4)
           s0 << r4
           if r4
-            r6 = _nt_start_fragment
+            r6 = _nt_starter
             s0 << r6
             if r6
               s7, i7 = [], index
@@ -639,10 +639,74 @@ module CSKit
         r0
       end
 
-      def _nt_start_fragment
+      module Starter0
+        def cardinality
+          elements[0]
+        end
+
+        def starter_fragment
+          elements[2]
+        end
+      end
+
+      def _nt_starter
         start_index = index
-        if node_cache[:start_fragment].has_key?(index)
-          cached = node_cache[:start_fragment][index]
+        if node_cache[:starter].has_key?(index)
+          cached = node_cache[:starter][index]
+          if cached
+            cached = SyntaxNode.new(input, index...(index + 1)) if cached == true
+            @index = cached.interval.end
+          end
+          return cached
+        end
+
+        i1, s1 = index, []
+        r2 = _nt_cardinality
+        s1 << r2
+        if r2
+          s3, i3 = [], index
+          loop do
+            if has_terminal?('\G[\\s]', true, index)
+              r4 = true
+              @index += 1
+            else
+              r4 = nil
+            end
+            if r4
+              s3 << r4
+            else
+              break
+            end
+          end
+          r3 = instantiate_node(SyntaxNode,input, i3...index, s3)
+          s1 << r3
+          if r3
+            r5 = _nt_starter_fragment
+            s1 << r5
+          end
+        end
+        if s1.last
+          r1 = instantiate_node(StarterNode,input, i1...index, s1)
+          r1.extend(Starter0)
+        else
+          @index = i1
+          r1 = nil
+        end
+        if r1
+          r0 = r1
+        else
+          r0 = instantiate_node(SyntaxNode,input, index...index)
+        end
+
+        node_cache[:starter][start_index] = r0
+
+        r0
+      end
+
+      def _nt_starter_fragment
+        start_index = index
+        if node_cache[:starter_fragment].has_key?(index)
+          cached = node_cache[:starter_fragment][index]
           if cached
             cached = SyntaxNode.new(input, index...(index + 1)) if cached == true
             @index = cached.interval.end
@@ -676,44 +740,7 @@ module CSKit
           r0 = instantiate_node(SyntaxNode,input, index...index)
         end
 
-        node_cache[:start_fragment][start_index] = r0
-
-        r0
-      end
-
-      def _nt_fragment
-        start_index = index
-        if node_cache[:fragment].has_key?(index)
-          cached = node_cache[:fragment][index]
-          if cached
-            cached = SyntaxNode.new(input, index...(index + 1)) if cached == true
-            @index = cached.interval.end
-          end
-          return cached
-        end
-
-        s0, i0 = [], index
-        loop do
-          if has_terminal?('\G[^\\(\\)]', true, index)
-            r1 = true
-            @index += 1
-          else
-            r1 = nil
-          end
-          if r1
-            s0 << r1
-          else
-            break
-          end
-        end
-        if s0.empty?
-          @index = i0
-          r0 = nil
-        else
-          r0 = instantiate_node(FragmentNode,input, i0...index, s0)
-        end
-
-        node_cache[:fragment][start_index] = r0
+        node_cache[:starter_fragment][start_index] = r0
 
         r0
       end
@@ -723,7 +750,7 @@ module CSKit
           elements[4]
         end
 
-        def fragment
+        def terminator_fragment
           elements[6]
         end
 
@@ -813,7 +840,7 @@ module CSKit
                   r9 = instantiate_node(SyntaxNode,input, i9...index, s9)
                   s1 << r9
                   if r9
-                    r11 = _nt_fragment
+                    r11 = _nt_terminator_fragment
                     s1 << r11
                     if r11
                       s12, i12 = [], index
@@ -863,6 +890,48 @@ module CSKit
         end
 
         node_cache[:terminator][start_index] = r0
+
+        r0
+      end
+
+      def _nt_terminator_fragment
+        start_index = index
+        if node_cache[:terminator_fragment].has_key?(index)
+          cached = node_cache[:terminator_fragment][index]
+          if cached
+            cached = SyntaxNode.new(input, index...(index + 1)) if cached == true
+            @index = cached.interval.end
+          end
+          return cached
+        end
+
+        s1, i1 = [], index
+        loop do
+          if has_terminal?('\G[^\\(\\)]', true, index)
+            r2 = true
+            @index += 1
+          else
+            r2 = nil
+          end
+          if r2
+            s1 << r2
+          else
+            break
+          end
+        end
+        if s1.empty?
+          @index = i1
+          r1 = nil
+        else
+          r1 = instantiate_node(FragmentNode,input, i1...index, s1)
+        end
+        if r1
+          r0 = r1
+        else
+          r0 = instantiate_node(SyntaxNode,input, index...index)
+        end
+
+        node_cache[:terminator_fragment][start_index] = r0
 
         r0
       end

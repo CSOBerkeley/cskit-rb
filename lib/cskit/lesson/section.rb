@@ -11,14 +11,6 @@ module CSKit
         @citation_texts = citation_texts
       end
 
-      def each_for(volume_name, formatter)
-        each_reading_group_for(volume_name) do |readings, citation|
-          yield formatter.format_readings(readings), citation
-        end
-      end
-
-      protected
-
       def each_reading_group_for(volume_name)
         volume_name = volume_name.to_sym
         volume = CSKit.get_volume(volume_name)

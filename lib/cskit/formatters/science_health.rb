@@ -4,7 +4,7 @@ module CSKit
   module Formatters
     module ScienceHealth
 
-      autoload :ScienceHealthTextualFormatter, "cskit/formatters/science_health/science_health_textual_formatter"
+      autoload :ScienceHealthPlainTextFormatter, "cskit/formatters/science_health/science_health_plain_text_formatter"
 
     end
   end

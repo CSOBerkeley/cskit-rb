@@ -56,7 +56,7 @@ module CSKit
       # not sure if the Reader should be responsible for this... consider refactoring at some point
       def unabbreviate(orig_book_name)
         book_name = orig_book_name.strip.chomp(".")  # remove trailing period
-        regex = /^#{book_name}\w+/
+        regex = /^#{book_name}\w*/
 
         found_book = volume.books.find do |book|
           book["name"] =~ regex

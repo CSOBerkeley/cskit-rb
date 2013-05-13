@@ -32,6 +32,41 @@ module CSKit
         @sections = sections
       end
 
+      def each_reading(volumes)
+        sections.each do |section|
+          volumes.each do |volume|
+            section.each_reading_group_for(volume) do |readings, citation|
+              yield section, citation, volume, readings
+            end
+          end
+        end
+      end
+
+      def each_formatted_reading(formatters)
+        each_reading(formatters.keys) do |section, citation, volume, readings|
+          formatter = formatters[volume]
+          yield section, citation, volume, formatter.format_readings(readings)
+        end
+      end
+
+      def each_formatted_section(formatters)
+        last_section = nil
+        current_texts = nil
+
+        each_formatted_reading(formatters) do |section, citation, volume, text|
+          if section.name != (last_section.name rescue nil)
+            yield section, current_texts if current_texts
+            current_texts = {}
+          end
+
+          last_section = section
+          formatter = formatters[volume]
+          current_texts[volume] = formatter.join([current_texts[volume], text])
+        end
+
+        yield last_section, current_texts if current_texts
+      end
+
     end
   end
 end

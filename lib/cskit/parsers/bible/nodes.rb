@@ -95,7 +95,7 @@ module CSKit
           CSKit::Parsers::Bible::Verse.new(
             line_numbers.first,
             line_numbers.last,
-            (start_fragment.value rescue nil),
+            (starter.to_object rescue nil),
             (terminator.to_object rescue nil)
           )
         end
@@ -113,9 +113,9 @@ module CSKit
         end
       end
 
-      class TerminatorNode < Treetop::Runtime::SyntaxNode
+      class PositionalNode < Treetop::Runtime::SyntaxNode
         def to_sexp
-          [get_cardinality, fragment.text_value]
+          [get_cardinality, fragment.value]
         end
 
         def get_cardinality
@@ -124,7 +124,19 @@ module CSKit
         end
 
         def to_object
-          Terminator.new(get_cardinality, fragment.text_value)
+          Positional.new(get_cardinality, fragment.value)
+        end
+      end
+
+      class StarterNode < PositionalNode
+        def fragment
+          starter_fragment
+        end
+      end
+
+      class TerminatorNode < PositionalNode
+        def fragment
+          terminator_fragment
         end
       end
 

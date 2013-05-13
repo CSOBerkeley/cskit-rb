@@ -28,7 +28,7 @@ module CSKit
       end
 
       rule verse
-        (compound_verse_number / verse_number) [\s]* start_fragment [\s]* terminator <VerseNode>
+        (compound_verse_number / verse_number) [\s]* starter [\s]* terminator <VerseNode>
       end
 
       rule compound_verse_number
@@ -39,16 +39,20 @@ module CSKit
         [\d]+ <VerseNumberNode>
       end
 
-      rule start_fragment
+      rule starter
+        (cardinality [\s]* starter_fragment <StarterNode>)?
+      end
+
+      rule starter_fragment
         ([^\(\)\,\;]+ <FragmentNode>)?
       end
 
-      rule fragment
-        [^\(\)]+ <FragmentNode>
+      rule terminator
+        ("(" [\s]* "to" [\s]* cardinality [\s]* terminator_fragment [\s]* ")" <TerminatorNode>)?
       end
 
-      rule terminator
-        ("(" [\s]* "to" [\s]* cardinality [\s]* fragment [\s]* ")" <TerminatorNode>)?
+      rule terminator_fragment
+        ([^\(\)]+ <FragmentNode>)?
       end
 
       rule cardinality
