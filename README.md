@@ -138,13 +138,13 @@ Here's an example JSON file for a lesson. Note that each volume name (eg. "bible
 
 ### Parsing Citations
 
-CSKit contains a number of parsers that can transform a citation string into a citation object.  For example, the `BibleParser` can read and interpret "Gen. 12:1-3 and in, 4 (to ;)" like so:
+CSKit contains a number of parsers that can transform a citation string into a citation object.  For example, the `BibleParser` can read and interpret "Gen. 12:1-3 and in (to ;)" like so:
 
 ```ruby
 include CSKit::Parsers
 
 parser = BibleParser.new
-citation = parser.parse("Gen. 12:1, 2, 3 and in (to ;)").to_object
+citation = parser.parse("Gen. 12:1-3 and in (to ;)").to_object
 
 citation.book                     # "Gen."
 citation.chapter_list             # [#<Chapter .. >, #<Chapter .. >, ...]
