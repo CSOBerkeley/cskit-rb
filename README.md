@@ -48,15 +48,15 @@ CSKit.volume_available?(:blarg)           # false
 
 CSKit uses vocabulary that helps consistently describe the objects in the system.  Here are a few definitions that may be helpful to you as you spelunk this documentation and the source code:
 
-1. _Volume_: A textual resource.  This should probably have been named "book", but "book of the bible" introduces ambiguity, so "volume" it is.
-2. _Citation_: References text in a volume.  Parsers generate citation objects, and citation objects are passed to readers.
-3. _Parser_: Converts a citation string into a citation object so it can be used to retrieve text.
-4. _Reader_: An interface for retrieving text from a volume.
-5. _Lesson_: A collection of citations divided into sections.  Each section contains a number of citations and their corresponding volumes.  Analogous to the weekly Christian Science Bible Lesson.
-6. _Section_: A list of homogeneous citations.  All citations reference text in the same volume.
-7. _Formatter_: Logic for rendering readings.
-8. _Reading_: Text for a single citation.  Made up of multiple texts.
-9. _Text_: A single unit of text, eg. line, verse, etc.
+1. **Volume**: A textual resource.  This should probably have been named "book", but "book of the bible" introduces ambiguity, so "volume" it is.
+2. **Citation**: References text in a volume.  Parsers generate citation objects, and citation objects are passed to readers.
+3. **Parser**: Converts a citation string into a citation object so it can be used to retrieve text.
+4. **Reader**: An interface for retrieving text from a volume.
+5. **Lesson**: A collection of citations divided into sections.  Each section contains a number of citations and their corresponding volumes.  Analogous to the weekly Christian Science Bible Lesson.
+6. **Section**: A list of homogeneous citations.  All citations reference text in the same volume.
+7. **Formatter**: Logic for rendering readings.
+8. **Reading**: Text for a single citation.  Made up of multiple texts.
+9. **Text**: A single unit of text, eg. line, verse, etc.
 
 ### Lessons
 
@@ -117,7 +117,7 @@ Here's an example JSON file for a lesson. Note that each volume name (eg. "bible
     "section": "1",
     "readings": {
       "bible": [
-        "Gen. 12:1, 2, 3 and in, 4 (to ;)",
+        "Gen. 12:1-3 the (to :)",
         "Gen. 17:1, 2, 5",
         "Gen. 22:17 in (to 1st ;), 18",
         "Ps. 91:14"
@@ -138,13 +138,13 @@ Here's an example JSON file for a lesson. Note that each volume name (eg. "bible
 
 ### Parsing Citations
 
-CSKit contains a number of parsers that can transform a citation string into a citation object.  For example, the `BibleParser` can read and interpret "Gen. 12:1-3 and in (to ;)" like so:
+CSKit contains a number of parsers that can transform a citation string into a citation object.  For example, the `BibleParser` can read and interpret "Gen. 12:1-3 the (to :)" like so:
 
 ```ruby
 include CSKit::Parsers
 
 parser = BibleParser.new
-citation = parser.parse("Gen. 12:1-3 and in (to ;)").to_object
+citation = parser.parse("Gen. 12:1-3 the (to :)").to_object
 
 citation.book                     # "Gen."
 citation.chapter_list             # [#<Chapter .. >, #<Chapter .. >, ...]
@@ -155,8 +155,82 @@ citation.chapter_list.first.tap do |chapter|
     verse.start                   # 1
     verse.finish                  # 3
     verse.starter.fragment        # "and in"
-    verse.terminator.fragment     # ";"
+    verse.terminator.fragment     # ":"
     verse.terminator.cardinality  # 1
   end
 end
 ```
+
+In addition, each volume provides a thin wrapper around the appropriate parser object, so you don't have to create one manually:
+
+```ruby
+volume = CSKit.get_volume(:bible)
+volume.parse_citation("Gen. 12:1-3 the (to :)")  # returns a citation object
+```
+
+### Retrieving Citations
+
+Once you have a citation object, you'll likely want to fetch text - the responsibility of a reader.  Readers take in citations and return an array of `Reading` objects:
+
+```ruby
+include CSKit::Readers
+
+reader = BibleReader.new(volume)
+reader.get_book("Genesis")         # #<Book .. >
+reader.get_chapter(12, "Genesis"), # #<Chapter .. >
+
+reader.readings_for(citation)      # [#<Reading .. >, ... ]
+```
+
+In addition, each volume provides a thin wrapper around the appropriate reader object, so you don't have to create one manually:
+
+```ruby
+volume.readings_for(citation)  # [#<Reading .. >, ... ]
+```
+
+### Formatting Text
+
+Now that you have text in the form of `Reading` objects, you might want to format it for display - the responsibility of a formatter.  Currently, CSKit contains two formatters, one for the Bible and another for Science and Health.  Both of these format `Reading` objects as plain text.  If you'd like to apply a different style of formatting (eg. HTML), you'll need to create your own class.
+
+Here's a formatting example for the Bible citation we've been using:
+
+```ruby
+include CSKit::Formatters::Bible
+
+readings = reader.readings_for(citation)
+
+# these options are actually the defaults, shown here for demonstration purposes
+formatter = BiblePlainTextFormatter.new(
+  :include_verse_number => true,
+  :separator => " "
+)
+
+formatter.format_readings(readings)
+```
+
+The formatted output:
+
+```
+1 ...the LORD had said unto Abram, Get thee out of thy country, and from thy kindred, and from thy father's house, unto a land that I will shew thee: 2 And I will make of thee a great nation, and I will bless thee, and make thy name great; and thou shalt be a blessing: 3 And I will bless them that bless thee, and curse him that curseth thee:
+```
+
+For Science and Health, use the `ScienceHealthPlainTextFormatter` class.
+
+## Requirements
+
+CSKit needs to parse JSON, so it depends on the json gem.
+
+## Running Tests
+
+`bundle exec rake` will run the test suite, although at the current time there are no tests :(
+
+## Authors
+
+* Cameron C. Dutro: http://github.com/camertron
+
+## Links
+* Project Gutenberg: [http://gutenberg.org/](http://gutenberg.org/)
+
+## License
+
+Licensed under the Apache License, Version 2.0: http://www.apache.org/licenses/LICENSE-2.0
