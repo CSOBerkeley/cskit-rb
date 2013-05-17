@@ -44,9 +44,11 @@ CSKit.volume_available?(:science_health)  # true
 CSKit.volume_available?(:blarg)           # false
 ```
 
-Note that CSKit can find volumes by their type as well.  The King James Bible for example is of type Bible, so these two statements are equivalent:
+Get volume objects directly by using the `get_volume` method.  Note that CSKit can find volumes by their type as well as by their name.  These two statements are equivalent because on failing to find `:bible` by name, CSKit will fallback to the last registered volume of the type "bible".
 
 ```ruby
+CSKit.get_volume(:bible_kjv)
+CSKit.get_volume(:bible)
 ```
 
 #### Definitions
@@ -58,7 +60,7 @@ CSKit uses vocabulary that helps consistently describe the objects in the system
 3. **Parser**: Converts a citation string into a citation object so it can be used to retrieve text.
 4. **Reader**: An interface for retrieving text from a volume.
 5. **Lesson**: A collection of citations divided into sections.  Each section contains a number of citations and their corresponding volumes.  Analogous to the weekly Christian Science Bible Lesson.
-6. **Section**: A list of homogeneous citations.  All citations reference text in the same volume.
+6. **Section**: A group of citations, possibly refrencing multiple volumes.
 7. **Formatter**: Logic for rendering readings.
 8. **Reading**: Text for a single citation.  Made up of multiple texts.
 9. **Text**: A single unit of text, eg. line, verse, etc.
@@ -213,10 +215,13 @@ formatter = BiblePlainTextFormatter.new(
 formatter.format_readings(readings)
 ```
 
-The formatted output:
+The formatted output (carriage returns added manually for Github display reasons):
 
 ```
-1 ...the LORD had said unto Abram, Get thee out of thy country, and from thy kindred, and from thy father's house, unto a land that I will shew thee: 2 And I will make of thee a great nation, and I will bless thee, and make thy name great; and thou shalt be a blessing: 3 And I will bless them that bless thee, and curse him that curseth thee:
+1 ...the LORD had said unto Abram, Get thee out of thy country, and from thy kindred,
+and from thy father's house, unto a land that I will shew thee: 2 And I will make of thee
+a great nation, and I will bless thee, and make thy name great; and thou shalt be a
+blessing: 3 And I will bless them that bless thee, and curse him that curseth thee:
 ```
 
 For Science and Health, use the `ScienceHealthPlainTextFormatter` class.
