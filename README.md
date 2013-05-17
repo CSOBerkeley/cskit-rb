@@ -31,7 +31,7 @@ require 'cskit/science_health'
 
 ### Basics
 
-Requiring one of the textual resource gems (eg. `require 'cskit/science_health'`) will make the resource available as a `Volume`.  `Volume`s provide access to a single textual resource and expose, among other things, a citation parser and a text reader.  Use each `Volume`'s `parse_citation` and `readings_for` methods to parse a citations and retrieve text.  You can learn more about these specific components below.
+Requiring one of the textual resource gems (eg. `require 'cskit/science_health'`) will make the resource available as a `Volume`.  `Volume`s provide access to a single textual resource and expose, among other things, a citation parser and a text reader.  Use each `Volume`'s `parse_citation` and `readings_for` methods to parse citations and retrieve text.  You can learn more about these specific components below.
 
 You can ask CSKit which textual resources are currently available via the `available_volumes` method:
 
@@ -39,9 +39,14 @@ You can ask CSKit which textual resources are currently available via the `avail
 require 'cskit/science_health'
 require 'cskit/bible/kjv'
 
-CSKit.available_volumes                   # { :science_health => ..., :bible => ... }
+CSKit.available_volumes                   # { :science_health => ..., :bible_kjv => ... }
 CSKit.volume_available?(:science_health)  # true
 CSKit.volume_available?(:blarg)           # false
+```
+
+Note that CSKit can find volumes by their type as well.  The King James Bible for example is of type Bible, so these two statements are equivalent:
+
+```ruby
 ```
 
 #### Definitions
