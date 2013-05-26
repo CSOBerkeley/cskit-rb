@@ -15,7 +15,7 @@ module CSKit
         volume_name = volume_name.to_sym
         volume = CSKit.get_volume(volume_name)
 
-        citation_texts[volume_name].each do |citation_text|
+        (citation_texts[volume_name] || []).each do |citation_text|
           citation = volume.parse_citation(citation_text)
           yield volume.readings_for(citation), citation
         end
