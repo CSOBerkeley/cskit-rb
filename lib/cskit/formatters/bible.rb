@@ -5,6 +5,7 @@ module CSKit
     module Bible
 
       autoload :BiblePlainTextFormatter, "cskit/formatters/bible/bible_plain_text_formatter"
+      autoload :BibleHtmlFormatter,      "cskit/formatters/bible/bible_html_formatter"
 
     end
   end
