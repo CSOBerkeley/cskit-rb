@@ -1,10 +1,10 @@
 require 'cskit'
 require 'cskit/bible/kjv'
-require 'pry'
 
 # puts `tt /Users/legrandfromage/workspace/cskit-rb/lib/cskit/parsers/bible/bible.treetop`
 
-book = CSKit.get_book(:bible_kjv)
-# citation = book.parse_citation("Psalms 86:3-5, 13, 15 thou")
-citation = book.parse_citation("Proverbs 16:11 (to :)")
-puts book.text_for(citation)
+volume = CSKit.get_volume(:bible_kjv)
+citation = volume.parse_citation("Neh. 6:1 (to 1st ;)")
+readings = volume.readings_for(citation)
+formatter = CSKit::Formatters::Bible::BiblePlainTextFormatter.new
+puts formatter.format_readings(readings)
