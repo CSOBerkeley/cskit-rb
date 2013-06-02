@@ -37,7 +37,7 @@ module CSKit
 
         each_line(line_number, page_number) do |line, line_number, page_number|
           if first_line
-            lines << line_text
+            lines << line
           else
             if line.paragraph_start? && !first_line
               break
