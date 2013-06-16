@@ -1,6 +1,7 @@
 require 'cskit'
 require 'cskit/bible/kjv'
 
+# Re-generate the bible parser from the treetop grammar
 # puts `tt /Users/legrandfromage/workspace/cskit-rb/lib/cskit/parsers/bible/bible.treetop`
 
 volume = CSKit.get_volume(:bible_kjv)

@@ -1,6 +1,7 @@
 require 'cskit'
 require 'cskit/science_health'
 
+# Re-generate the sh parser from the treetop grammar
 # puts `tt /Users/legrandfromage/workspace/cskit-rb/lib/cskit/parsers/bible/bible.treetop`
 
 volume = CSKit.get_volume(:science_health)
