@@ -4,19 +4,45 @@ module CSKit
   module Parsers
     module Bible
 
+      module ToJson
+        def to_json
+          to_hash.to_json
+        end
+      end
+
       Citation = Struct.new(:book, :chapter_list) do
+        include ToJson
+
         def to_s
           "#{book.strip} #{chapter_list.map(&:to_s).join("; ")}"
+        end
+
+        def to_hash
+          {
+            :book => book,
+            :chapters => chapter_list.map(&:to_hash)
+          }
         end
       end
 
       Chapter = Struct.new(:chapter_number, :verse_list) do
+        include ToJson
+
         def to_s
           "#{chapter_number}:#{verse_list.map(&:to_s).join(", ")}"
+        end
+
+        def to_hash
+          {
+            :chapter_number => chapter_number,
+            :verses => verse_list.map(&:to_hash)
+          }
         end
       end
 
       Verse = Struct.new(:start, :finish, :starter, :terminator) do
+        include ToJson
+
         def to_s
           str = if start == finish
             start.to_s
@@ -28,9 +54,20 @@ module CSKit
           str << " (to #{terminator})" if terminator
           str
         end
+
+        def to_hash
+          {
+            :start => start,
+            :finish => finish,
+            :starter => starter ? starter.to_hash : nil,
+            :terminator => terminator ? terminator.to_hash : nil
+          }
+        end
       end
 
       Positional = Struct.new(:cardinality, :fragment) do
+        include ToJson
+
         def to_s
           card_s = case cardinality
             when 1 then "1st"
@@ -43,6 +80,13 @@ module CSKit
           else
             fragment
           end
+        end
+
+        def to_hash
+          {
+            :cardinality => cardinality,
+            :fragment => fragment
+          }
         end
       end
 
