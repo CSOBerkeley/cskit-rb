@@ -13,6 +13,10 @@ module CSKit
       Citation = Struct.new(:book, :chapter_list) do
         include ToJson
 
+        def book_for_path
+          book.strip.downcase.gsub(" ", "_")
+        end
+
         def to_s
           "#{book.strip} #{chapter_list.map(&:to_s).join("; ")}"
         end

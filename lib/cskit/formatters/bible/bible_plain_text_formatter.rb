@@ -16,7 +16,7 @@ module CSKit
             readings.map do |reading|
               format_verse_texts(
                 reading.texts,
-                reading.citation
+                reading.verse
               )
             end
           )

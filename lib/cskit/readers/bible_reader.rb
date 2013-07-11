@@ -29,7 +29,7 @@ module CSKit
       def readings_for(citation)
         citation.chapter_list.flat_map do |chapter|
           map_verse_texts_for(chapter, citation.book) do |texts, verse|
-            Reading.new(texts, verse)
+            Reading.new(texts, citation, chapter, verse)
           end
         end
       end
