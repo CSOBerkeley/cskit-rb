@@ -9,7 +9,7 @@ module CSKit
       end
 
       def to_annotated_reading
-        AnnotatedReading.new(texts, citation)
+        AnnotatedReading.new(texts, citation, chapter, verse)
       end
     end
 
@@ -17,8 +17,6 @@ module CSKit
       def add_annotation(text_index, annotation)
         (annotations[text_index] ||= []) << annotation
       end
-
-      private
 
       def annotations
         @annotations ||= {}
