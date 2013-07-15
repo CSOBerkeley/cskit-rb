@@ -26,11 +26,6 @@ module CSKit
     end
 
     def delete(pos, length)
-      annotations.size.times do |i|
-      end
-    end
-
-    def delete(pos, length)
       new_length = string.length - length
 
       annotations.reject! do |annotation|
