@@ -3,23 +3,18 @@
 module CSKit
   module Formatters
     module Bible
-      class BiblePlainTextFormatter
-
-        attr_reader :options
-
-        def initialize(options = {})
-          @options = options
-        end
+      class BiblePlainTextFormatter < CSKit::Formatters::Formatter
 
         def format_readings(readings)
-          join(
-            readings.map do |reading|
-              format_verse_texts(
-                reading.texts,
-                reading.verse
-              )
-            end
-          )
+          join_readings(readings) do |reading|
+            format_reading(reading)
+          end
+        end
+
+        def format_annotated_readings(readings, annotation_formatter)
+          join_readings(readings) do |reading|
+            format_annotated_reading(reading, annotation_formatter)
+          end
         end
 
         def join(texts)
@@ -28,35 +23,73 @@ module CSKit
 
         protected
 
-        def format_verse_texts(texts, verse)
+        def join_readings(readings)
           join(
-            texts.each_with_index.map do |text, index|
-              text = format_starter(text, verse.starter) if index == 0
-              text = format_terminator(text, verse.terminator) if index == texts.size - 1
-              verse_number = verse.start + index
-              include_verse_number? ? "#{verse_number} #{text}" : text
+            readings.map do |reading|
+              join(yield(reading))
             end
           )
         end
 
-        def format_starter(text, starter)
-          if starter
-            regex = /\s+#{starter.fragment}([\s,\.\-_\?\!\.;:]|$)/
-            begin_pos = find_position(text, regex, starter.cardinality)
-            begin_pos ? "..." + text[begin_pos..-1].strip : text.strip
-          else
-            text
+        def format_annotated_reading(reading, annotation_formatter)
+          reading.texts.each_with_index.map do |text, index|
+            starter_pos = starter_position(text, reading.verse.starter)
+            terminator_pos = terminator_position(text, reading.verse.terminator)
+
+            annotated_str = CSKit::AnnotatedString.new(text, reading.annotations_at(index))
+            annotated_str.delete(terminator_pos + 1, text.length - (terminator_pos + 1)) if terminator_pos
+            annotated_str.delete(0, starter_pos) if starter_pos
+            
+            text = annotated_str.render do |snippet, annotation|
+              annotation_formatter.format_annotation(annotation, snippet)
+            end
+
+            verse_number = reading.verse.start + index
+            attach_verse_number(verse_number, text)
           end
         end
 
-        def format_terminator(text, terminator)
+        def format_reading(reading)
+          reading.texts.each_with_index.map do |text, index|
+            if index == 0
+              pos = starter_position(text, reading.verse.starter)
+              text = format_starter(pos ? text[pos..-1].strip : text.strip, pos)
+            end
+
+            if index == reading.texts.size - 1
+              pos = terminator_position(text, reading.verse.terminator)
+              text = format_terminator(pos ? text[0..pos] : text, pos)
+            end
+
+            verse_number = reading.verse.start + index
+            attach_verse_number(verse_number, text)
+          end
+        end
+
+        def attach_verse_number(verse_number, text)
+          include_verse_number? ? "#{verse_number} #{text}" : text
+        end
+
+        def starter_position(text, starter)
+          if starter
+            regex = /\s+#{starter.fragment}([\s,\.\-_\?\!\.;:]|$)/
+            find_position(text, regex, starter.cardinality)
+          end
+        end
+
+        def format_starter(text, pos)
+          pos ? "..." + text : text
+        end
+
+        def terminator_position(text, terminator)
           if terminator
             regex = /#{Regexp.escape(terminator.fragment)}/
-            stop_pos = find_position(text, regex, terminator.cardinality)
-            text[0..stop_pos]
-          else
-            text
+            find_position(text, regex, terminator.cardinality)
           end
+        end
+
+        def format_terminator(text, pos)
+          text
         end
 
         def find_position(text, regex, cardinality)

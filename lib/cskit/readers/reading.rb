@@ -11,6 +11,10 @@ module CSKit
       def to_annotated_reading
         AnnotatedReading.new(texts, citation, chapter, verse)
       end
+
+      def annotated?
+        false
+      end
     end
 
     class AnnotatedReading < Reading
@@ -18,8 +22,16 @@ module CSKit
         (annotations[text_index] ||= []) << annotation
       end
 
+      def annotations_at(index)
+        annotations[index]
+      end
+
       def annotations
         @annotations ||= {}
+      end
+
+      def annotated?
+        true
       end
     end
 

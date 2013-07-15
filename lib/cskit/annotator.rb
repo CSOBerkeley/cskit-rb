@@ -9,7 +9,8 @@ module CSKit
       @config = config
     end
 
-    Annotation = Struct.new(:start, :finish, :data)
-
   end
+
+  Annotation = Struct.new(:start, :finish, :data)
+
 end

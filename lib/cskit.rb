@@ -5,13 +5,17 @@ require 'cskit/lesson'
 require 'cskit/parsers'
 require 'cskit/readers'
 require 'cskit/volume'
-require 'cskit/annotator'
 require 'cskit/resources/volumes'
 
 require 'treetop'
 require 'json'
 
 module CSKit
+
+  autoload :Annotator,       "cskit/annotator"
+  autoload :Annotation,      "cskit/annotator"
+  autoload :AnnotatedString, "cskit/annotated_string"
+
   class << self
 
     def register_volume(config)
@@ -65,4 +69,5 @@ module CSKit
     end
 
   end
+
 end
