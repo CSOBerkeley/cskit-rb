@@ -5,20 +5,6 @@ PATH
       json
       treetop
 
-PATH
-  remote: ~/workspace/cskit-biblekjv-rb
-  specs:
-    cskit-biblekjv (1.0.0)
-      cskit (~> 1.0.0)
-      json
-
-PATH
-  remote: ~/workspace/cskit-shkts-rb
-  specs:
-    cskit-shkts (1.0.0)
-      cskit (~> 1.0.0)
-      json
-
 GEM
   remote: http://rubygems.org/
   specs:
@@ -43,8 +29,6 @@ PLATFORMS
 
 DEPENDENCIES
   cskit!
-  cskit-biblekjv!
-  cskit-shkts!
   pry
   pry-nav
   rake

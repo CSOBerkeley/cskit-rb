@@ -1,5 +1,5 @@
 require 'cskit'
-require 'cskit/bible/kjv'
+require 'cskit/bible/kjv'  # requires cskit-biblekjv-rb (add to Gemfile under 'development')
 
 # Re-generate the bible parser from the treetop grammar
 # puts `tt /Users/legrandfromage/workspace/cskit-rb/lib/cskit/parsers/bible/bible.treetop`

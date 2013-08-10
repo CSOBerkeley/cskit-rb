@@ -1,5 +1,5 @@
 require 'cskit'
-require 'cskit/science_health'
+require 'cskit/science_health'  # requires cskit-shkts-rb (add to Gemfile under 'development')
 
 # Re-generate the sh parser from the treetop grammar
 # puts `tt /Users/legrandfromage/workspace/cskit-rb/lib/cskit/parsers/bible/bible.treetop`

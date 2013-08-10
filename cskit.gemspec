@@ -21,9 +21,5 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'rake'
 
   s.require_path = 'lib'
-
-  gem_files       = Dir["{lib,spec,resources}/**/*", "Gemfile", "History.txt", "LICENSE", "README.md", "Rakefile", "cskit.gemspec"]
-  versioned_files = `git ls-files`.split("\n")
-
-  s.files = gem_files & versioned_files
+  s.files = Dir["{lib,spec,resources}/**/*", "Gemfile", "History.txt", "LICENSE", "README.md", "Rakefile", "cskit.gemspec"]
 end
