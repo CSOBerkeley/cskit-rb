@@ -12,31 +12,62 @@ require 'json'
 
 module CSKit
 
+  autoload :Annotator,       "cskit/annotator"
+  autoload :Annotation,      "cskit/annotator"
+  autoload :AnnotatedString, "cskit/annotated_string"
+
   class << self
+
     def register_volume(config)
-      available_volumes[config[:id].to_sym] = config[:volume].new(config)
+      register(:volume, config[:id], config[:volume].new(config))
+    end
+
+    def register_annotator(config)
+      register(:annotator, config[:id], config[:annotator].new(config))
     end
 
     def get_volume(volume_id)
-      volume_id = volume_id.to_sym
-      available_volumes[volume_id] || get_volume_for_type(volume_id)
+      get(:volume, volume_id)
     end
 
-    def get_volume_for_type(type)
-      found_volume = available_volumes.find do |volume_id, volume|
-        volume.config[:type] == type
-      end
-
-      found_volume.last if found_volume
+    def get_annotator(annotator_id)
+      get(:annotator, annotator_id)
     end
 
     def volume_available?(volume_id)
-      available_volumes.include?(volume_id)
+      available?(:volume, volume_id)
     end
 
-    def available_volumes
-      @available_volumes ||= {}
+    def annotator_available?(annotator_id)
+      available?(:annotator, annotator_id)
     end
+
+    private
+
+    def register(family, key, obj)
+      (registry[family.to_sym] ||= {})[key.to_sym] = obj
+    end
+
+    def get(family, key)
+      registry[family.to_sym][key.to_sym] || get_for_type(family, key)
+    end
+
+    def get_for_type(family, type)
+      found = registry[family.to_sym].find do |key, obj|
+        obj.config[:type] == type
+      end
+
+      found.last if found
+    end
+
+    def available?(family, key)
+      !!registry[family.to_sym][key.to_sym] rescue false
+    end
+
+    def registry
+      @registry ||= {}
+    end
+
   end
 
 end

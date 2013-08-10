@@ -3,19 +3,13 @@
 module CSKit
   module Formatters
     module ScienceHealth
-      class ScienceHealthPlainTextFormatter
-
-        attr_reader :options
+      class ScienceHealthPlainTextFormatter < CSKit::Formatters::Formatter
 
         # semicolon, question mark, or period
         SENTENCE_TERMINATOR_REGEX = /[;\?\.]/
 
         # either a period + space, quotes, or start of line followed by the first capital letter or number.
         SENTENCE_START_REGEX = /(\.\s+|\.\"\s+|\.\'\s+|^)[A-Z0-9\"\']/
-
-        def initialize(options = {})
-          @options = options
-        end
 
         def format_readings(readings)
           join(

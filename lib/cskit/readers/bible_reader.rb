@@ -29,7 +29,7 @@ module CSKit
       def readings_for(citation)
         citation.chapter_list.flat_map do |chapter|
           map_verse_texts_for(chapter, citation.book) do |texts, verse|
-            Reading.new(texts, verse)
+            Reading.new(texts, citation, chapter, verse)
           end
         end
       end
@@ -50,19 +50,7 @@ module CSKit
       end
 
       def convert_book_name(book_name)
-        unabbreviate(book_name).downcase.gsub(" ", "_")
-      end
-
-      # not sure if the Reader should be responsible for this... consider refactoring at some point
-      def unabbreviate(orig_book_name)
-        book_name = orig_book_name.strip.chomp(".")  # remove trailing period
-        regex = /^#{book_name}\w*/
-
-        found_book = volume.books.find do |book|
-          book["name"] =~ regex
-        end
-
-        found_book ? found_book["name"] : orig_book_name
+        volume.unabbreviate_book_name(book_name).downcase.gsub(" ", "_")
       end
 
     end
