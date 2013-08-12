@@ -39,7 +39,7 @@ module CSKit
             annotated_str = CSKit::AnnotatedString.new(text, reading.annotations_at(index))
             annotated_str.delete(terminator_pos + 1, text.length - (terminator_pos + 1)) if terminator_pos
             annotated_str.delete(0, starter_pos) if starter_pos
-            
+
             text = annotated_str.render do |snippet, annotation|
               annotation_formatter.format_annotation(annotation, snippet)
             end
