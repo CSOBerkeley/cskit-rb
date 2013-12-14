@@ -8,6 +8,9 @@ CSKit is a citation parsing and retrieval toolkit for various Christian Science 
 2. Science and Health with Key to the Scriptures ([cskit-shkts-rb](https://github.com/camertron/cskit-shkts-rb))
 3. Christian Science Hymnal ([cskit-hymnal-rb](https://github.com/camertron/cskit-hymnal-rb))
 
+Clone all repositories with this handy one-liner:
+`\curl -sSL http://bit.ly/1dyPu88 | bash -s`
+
 ## Installation
 
 `gem install cskit`, `gem install cskit-shkts`, etc
