@@ -9,7 +9,7 @@ module CSKit
         SENTENCE_TERMINATOR_REGEX = /[;\?\.]/
 
         # either a period + space, quotes, or start of line followed by the first capital letter or number.
-        SENTENCE_START_REGEX = /(\.\s+|\.\"\s+|\.\'\s+|^)[A-Z0-9\"\']/
+        SENTENCE_START_REGEX = /(\.\s+|\.\"\s+|\.\'\s+|\?\s+|^)[A-Z0-9\"\']/
 
         def format_readings(readings)
           join(
