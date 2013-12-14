@@ -29,6 +29,7 @@ module CSKit
             [line_number + 1, page_number]
           end
         end
+      rescue Errno::ENOENT => e
       end
 
       def get_paragraph(page_number, line_number)
@@ -88,7 +89,11 @@ module CSKit
             numerals[index + 1]
           end
         else
-          (page_number.to_i + 1).to_s
+          if page_number == "497"
+            "501"
+          else
+            (page_number.to_i + 1).to_s
+          end
         end
       end
 
