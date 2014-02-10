@@ -6,6 +6,10 @@ module CSKit
 
       attr_reader :volume
 
+      Paragraph = Struct.new(
+        :lines, :line_start, :line_end, :page_start, :page_end
+      )
+
       def initialize(volume)
         @volume = volume
       end
@@ -22,35 +26,48 @@ module CSKit
       def each_line(line_number, page_number)
         while page = get_page(page_number)
           yield get_line(line_number, page_number), line_number, page_number
+          line_number, page_number = increment(line_number, page_number)
+        end
+      rescue Errno::ENOENT => e
+      end
 
-          line_number, page_number = if (line_number + 1) > page.lines.size
-            [1, next_page_number(page_number)]
-          else
-            [line_number + 1, page_number]
-          end
+      # be careful - this will go all the way to the end of the book unless you break
+      def each_paragraph(line_number, page_number)
+        while paragraph = get_paragraph(page_number, line_number)
+          yield paragraph
+          line_number, page_number = increment(
+            paragraph.line_end, paragraph.page_end
+          )
         end
       rescue Errno::ENOENT => e
       end
 
       def get_paragraph(page_number, line_number)
+        original_page_number = page_number
+        original_line_number = line_number
         first_line = true
         lines = []
 
-        each_line(line_number, page_number) do |line, line_number, page_number|
+        each_line(line_number, page_number) do |cur_line, cur_line_number, cur_page_number|
           if first_line
-            lines << line
+            lines << cur_line
           else
-            if line.paragraph_start? && !first_line
+            if cur_line.paragraph_start? && !first_line
               break
             else
-              lines << line
+              lines << cur_line
             end
           end
 
           first_line = false
+          line_number = cur_line_number
+          page_number = cur_page_number
         end
 
-        lines
+        Paragraph.new(
+          lines, original_line_number, line_number,
+          original_page_number, page_number
+        )
       end
 
       def get_line_range(range, page_number)
@@ -70,7 +87,7 @@ module CSKit
             if citation_line.only?
               [get_line(citation_line.start, citation.page)]
             else
-              get_paragraph(citation.page, citation_line.start)
+              get_paragraph(citation.page, citation_line.start).lines
             end
           end
 
@@ -79,6 +96,15 @@ module CSKit
       end
 
       protected
+
+      def increment(line_number, page_number)
+        page = get_page(page_number)
+        if (line_number + 1) > page.lines.size
+          [1, next_page_number(page_number)]
+        else
+          [line_number + 1, page_number]
+        end
+      end
 
       def next_page_number(page_number)
         numerals = ["vi", "vii", "ix", "x", "xi", "xii"]
