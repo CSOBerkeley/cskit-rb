@@ -1,3 +1,8 @@
 == 1.0.0
 
 * Birthday!
+
+== 1.0.1
+
+* Fix preface regex to detect pages starting at vii instead of vi for Science and Health.
+

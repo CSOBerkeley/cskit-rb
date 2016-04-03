@@ -6,7 +6,7 @@ module CSKit
 
       Page = Struct.new(:number, :lines) do
         def preface?
-          !!(number =~ /vi{1,3}|xi{1,2}|i{0,1}x/)
+          !!(number =~ /vi{2,3}|xi{1,2}|i{0,1}x/)
         end
 
         def to_hash
