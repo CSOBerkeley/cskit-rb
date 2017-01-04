@@ -21,7 +21,7 @@ module CSKit
           texts.join(separator)
         end
 
-        protected
+        private
 
         def join_readings(readings)
           join(
@@ -78,7 +78,7 @@ module CSKit
         end
 
         def format_starter(text, pos)
-          pos ? "..." + text : text
+          pos ? '...' + text : text
         end
 
         def terminator_position(text, terminator)

@@ -3,9 +3,8 @@
 module CSKit
   module Formatters
 
-    autoload :Bible,         "cskit/formatters/bible"
-    autoload :ScienceHealth, "cskit/formatters/science_health"
-
+    autoload :Bible,         'cskit/formatters/bible'
+    autoload :ScienceHealth, 'cskit/formatters/science_health'
 
     class Formatter
       attr_reader :options

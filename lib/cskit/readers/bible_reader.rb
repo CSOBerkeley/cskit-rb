@@ -34,7 +34,7 @@ module CSKit
         end
       end
 
-      protected
+      private
 
       def map_verse_texts_for(chapter, book_name)
         result = []
@@ -50,7 +50,7 @@ module CSKit
       end
 
       def convert_book_name(book_name)
-        volume.unabbreviate_book_name(book_name).downcase.gsub(" ", "_")
+        volume.unabbreviate_book_name(book_name).downcase.gsub(' ', '_')
       end
 
     end

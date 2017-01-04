@@ -10,13 +10,13 @@ module CSKit
         end
 
         def to_hash
-          { "number" => number, "lines" => lines.map(&:to_hash) }
+          { 'number' => number, 'lines' => lines.map(&:to_hash) }
         end
 
         def self.from_hash(hash)
           Page.new(
-            hash["number"],
-            hash["lines"].map { |line_hash| Line.from_hash(line_hash) }
+            hash['number'],
+            hash['lines'].map { |line_hash| Line.from_hash(line_hash) }
           )
         end
       end
@@ -29,17 +29,18 @@ module CSKit
         alias :paragraph_start? :paragraph_start
 
         def to_hash
-          { "text" => text,
-            "flyout_text" => flyout_text,
-            "paragraph_start" => paragraph_start
+          {
+            'text' => text,
+            'flyout_text' => flyout_text,
+            'paragraph_start' => paragraph_start
           }
         end
 
         def self.from_hash(hash)
           Line.new(
-            hash["text"],
-            hash["flyout_text"],
-            !!hash["paragraph_start"]
+            hash['text'],
+            hash['flyout_text'],
+            !!hash['paragraph_start']
           )
         end
       end

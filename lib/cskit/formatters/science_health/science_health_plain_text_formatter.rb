@@ -8,7 +8,8 @@ module CSKit
         # semicolon, question mark, or period
         SENTENCE_TERMINATOR_REGEX = /[;\?\.]/
 
-        # either a period + space, quotes, or start of line followed by the first capital letter or number.
+        # either a period + space, quotes, or start of line followed by the
+        # first capital letter or number.
         SENTENCE_START_REGEX = /(\.\s+|\.\"\s+|\.\'\s+|\?\s+|\!\s+|^)[A-Z0-9\"\']/
 
         def format_readings(readings)
@@ -23,7 +24,7 @@ module CSKit
           texts.join(separator)
         end
 
-        protected
+        private
 
         def format_lines(lines, citation_line)
           lines.each_with_index.map do |line, line_index|
@@ -37,7 +38,7 @@ module CSKit
                 matches = line_text.match(SENTENCE_START_REGEX)
                 if matches && matches.length == 2
                   offset = matches.offset(1)
-                  spaces = " " * offset.first  # indent to match physical position in S&H book
+                  spaces = ' ' * offset.first  # indent to match physical position in S&H book
                   spaces + line_text[matches.offset(1).last..-1]
                 else
                   line_text

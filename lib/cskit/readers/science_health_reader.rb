@@ -3,6 +3,7 @@
 module CSKit
   module Readers
     class ScienceHealthReader
+      NUMERALS = %w(vi vii ix x xi xii)
 
       attr_reader :volume
 
@@ -95,7 +96,7 @@ module CSKit
         end
       end
 
-      protected
+      private
 
       def increment(line_number, page_number)
         page = get_page(page_number)
@@ -107,16 +108,15 @@ module CSKit
       end
 
       def next_page_number(page_number)
-        numerals = ["vi", "vii", "ix", "x", "xi", "xii"]
-        if index = numerals.index(page_number)
-          if index == numerals.size - 1
-            "1"
+        if index = NUMERALS.index(page_number)
+          if index == NUMERALS.size - 1
+            '1'
           else
-            numerals[index + 1]
+            NUMERALS[index + 1]
           end
         else
-          if page_number == "497"
-            "501"
+          if page_number == '497'
+            '501'
           else
             (page_number.to_i + 1).to_s
           end

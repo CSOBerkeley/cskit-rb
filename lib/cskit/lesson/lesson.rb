@@ -17,8 +17,8 @@ module CSKit
         def from_json(data)
           sections = JSON.parse(data).map do |section_data|
             Section.new(
-              section_data["section"],
-              section_data["readings"].inject({}) do |ret, (k, v)|
+              section_data['section'],
+              section_data['readings'].inject({}) do |ret, (k, v)|
                 ret[k.to_sym] = v; ret
               end
             )

@@ -5,10 +5,9 @@ module CSKit
     module ScienceHealth
       class ScienceHealthHtmlFormatter < ScienceHealthPlainTextFormatter
 
-        # _word_
         ITALICS_REGEX = /_([a-zA-Z0-9\-\.,\"\'\?]+)_/
 
-        protected
+        private
 
         def format_lines(lines, citation_line)
           detect_italics(super)
@@ -23,7 +22,7 @@ module CSKit
         end
 
         def separator
-          options[:separator] || "<br />"
+          options[:separator] || '<br />'
         end
 
       end

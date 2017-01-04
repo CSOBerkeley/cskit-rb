@@ -6,3 +6,8 @@
 
 * Fix preface regex to detect pages starting at vii instead of vi for Science and Health.
 
+== 1.1.0
+
+* Parser rewrite.
+* Add parser tests.
+* General cleanup.

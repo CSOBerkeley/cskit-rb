@@ -15,6 +15,13 @@ module CSKit
       def annotated?
         false
       end
+
+      def to_hash
+        {
+          texts: texts,
+          chapter: chapter.to_hash
+        }
+      end
     end
 
     class AnnotatedReading < Reading

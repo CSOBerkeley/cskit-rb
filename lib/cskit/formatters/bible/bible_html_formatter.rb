@@ -5,7 +5,7 @@ module CSKit
     module Bible
       class BibleHtmlFormatter < BiblePlainTextFormatter
 
-        protected
+        private
 
         def format_verse_texts(texts, verse)
           texts.each_with_index.map do |text, index|
