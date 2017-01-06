@@ -21,6 +21,34 @@ describe BibleParser do
     end
   end
 
+  context 'single chapter, single verse, numbered book name' do
+    let(:citation_text) { 'II Chronicles 1:1' }
+
+    it 'parses correctly' do
+      expect(parser.parse.to_hash).to eq({
+        book: 'II Chronicles', chapters: [{
+          chapter_number: 1, verses: [{
+            start: 1, finish: 1, starter: nil, terminator: nil
+          }]
+        }]
+      })
+    end
+  end
+
+  context 'single chapter, single verse, Song of Solomon' do
+    let(:citation_text) { 'Song of Solomon 1:1' }
+
+    it 'parses correctly' do
+      expect(parser.parse.to_hash).to eq({
+        book: 'Song of Solomon', chapters: [{
+          chapter_number: 1, verses: [{
+            start: 1, finish: 1, starter: nil, terminator: nil
+          }]
+        }]
+      })
+    end
+  end
+
   context 'single chapter, verse range' do
     let(:citation_text) { 'Genesis 1:1-5' }
 

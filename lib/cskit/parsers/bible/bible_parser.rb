@@ -91,7 +91,7 @@ module CSKit
         end
 
         def book
-          current.value.tap { next_token(:text) }
+          current.value.tap { next_token(:book, :sos, :text) }
         end
 
         def chapter_list

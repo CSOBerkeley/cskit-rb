@@ -11,3 +11,7 @@
 * Parser rewrite.
 * Add parser tests.
 * General cleanup.
+
+== 1.1.1
+
+* Fix bible parser to handle books like "II Chronicles" and "Song of Solomon".

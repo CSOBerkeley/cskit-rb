@@ -6,6 +6,8 @@ module CSKit
 
       class BibleTokenizer < CSKit::Parsers::Tokenizer
         PATTERNS = {
+          book:        /\Ai{1,3}\s+[^\s\(\);:,]+/i,
+          sos:         /\Asong\s+of\s+solomon/i,
           left_paren:  /\A\(/,
           right_paren: /\A\)/,
           dash:        /\A-/,
