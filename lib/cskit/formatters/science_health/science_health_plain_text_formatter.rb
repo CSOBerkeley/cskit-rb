@@ -31,8 +31,8 @@ module CSKit
             line_text = line.text
 
             line_text = if line_index == 0
-              if citation_line.start_fragment
-                index = line_text.index(citation_line.start_fragment)
+              if citation_line.starter
+                index = line_text.index(citation_line.starter)
                 index ? line_text[index..-1] : line_text
               else
                 matches = line_text.match(SENTENCE_START_REGEX)

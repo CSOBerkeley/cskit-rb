@@ -1,10 +1,20 @@
-== 1.0.0
+== 1.2.0
 
-* Birthday!
+* Fix several citation parsing issues.
+  -> Issue causing fragment like "I will" to be interpreted as a book name.
+  -> Issue causing NoMethodError in Science and Health plain text formatter.
+     Method name changed from `start_fragment` to `starter` in v1.1.0.
+  -> Issue causing NoMethodError when parsing Science and Health citations
+     because the `only?` method was not defined on any terminator, broken
+     since v1.1.0.
+* Fix issue causing the Science and Health reader to only return the first
+  line for paragraph-based citations, eg 583:10.
+* Fix incorrect parser invocation in Volume base class, broken since v1.1.0.
+* Reminder: write some blasted tests :/
 
-== 1.0.1
+== 1.1.1
 
-* Fix preface regex to detect pages starting at vii instead of vi for Science and Health.
+* Fix bible parser to handle books like "II Chronicles" and "Song of Solomon".
 
 == 1.1.0
 
@@ -12,6 +22,10 @@
 * Add parser tests.
 * General cleanup.
 
-== 1.1.1
+== 1.0.1
 
-* Fix bible parser to handle books like "II Chronicles" and "Song of Solomon".
+* Fix preface regex to detect pages starting at vii instead of vi for Science and Health.
+
+== 1.0.0
+
+* Birthday!

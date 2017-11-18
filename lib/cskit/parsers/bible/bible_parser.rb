@@ -91,7 +91,18 @@ module CSKit
         end
 
         def book
-          current.value.tap { next_token(:book, :sos, :text) }
+          text
+        end
+
+        def text
+          ''.tap do |result|
+            while current && current.type == :text
+              result << "#{current.value} "
+              next_token(:text)
+            end
+
+            result.strip!
+          end
         end
 
         def chapter_list
@@ -173,8 +184,13 @@ module CSKit
 
         def positional
           card = cardinality
-          fragment = current.value
-          next_token(:text, :semicolon, :colon, :comma)
+          fragment = text
+
+          if fragment.empty?
+            fragment = current.value
+            next_token(:semicolon, :colon, :comma)
+          end
+
           Positional.new(card, fragment)
         end
 

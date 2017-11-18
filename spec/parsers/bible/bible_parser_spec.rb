@@ -230,4 +230,26 @@ describe BibleParser do
       })
     end
   end
+
+  context 'multiple verses with multi-word starters' do
+    let(:citation_text) { 'John 14:12-14, 16-21 I will, 25-27 (to 1st .)' }
+
+    it 'parses correctly' do
+      expect(parser.parse.to_hash).to eq({
+        book: 'John', chapters: [{
+          chapter_number: 14, verses: [{
+            start: 12, finish: 14, terminator: nil, starter: nil
+          }, {
+            start: 16, finish: 21, terminator: nil, starter: {
+              fragment: 'I will', cardinality: 1
+            }
+          }, {
+            start: 25, finish: 27, starter: nil, terminator: {
+              fragment: '.', cardinality: 1
+            }
+          }]
+        }]
+      })
+    end
+  end
 end

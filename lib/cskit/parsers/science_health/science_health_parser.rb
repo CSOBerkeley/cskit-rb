@@ -28,7 +28,7 @@ module CSKit
           end
 
           str << ' (only)' if only?
-          str << " #{start_fragment}" if start_fragment
+          str << " #{starter}" if starter
           str
         end
 
@@ -39,6 +39,10 @@ module CSKit
             starter: starter ? starter.to_hash : nil,
             terminator: terminator ? terminator.to_hash : nil
           }
+        end
+
+        def only?
+          terminator && terminator.only?
         end
       end
 
@@ -76,6 +80,9 @@ module CSKit
       end
 
       class FragmentTerminator < Positional
+        def only?
+          false
+        end
       end
 
       class OnlyTerminator
@@ -85,6 +92,10 @@ module CSKit
 
         def to_hash
           { only: true }
+        end
+
+        def only?
+          true
         end
 
         private def initialize

@@ -8,7 +8,7 @@ Gem::Specification.new do |s|
   s.version  = ::CSKit::VERSION
   s.authors  = ['Cameron Dutro']
   s.email    = ['camertron@gmail.com']
-  s.homepage = 'http://github.com/camertron'
+  s.homepage = 'http://github.com/CSOBerkeley/cskit-rb'
 
   s.description = s.summary = 'Christian Science citation library for Ruby.'
 

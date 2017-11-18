@@ -82,14 +82,14 @@ module CSKit
 
       def readings_for(citation)
         citation.lines.map do |citation_line|
-          lines = if citation_line.finish
-            get_line_range(citation_line.start..citation_line.finish, citation.page)
-          else
+          lines = if citation_line.start == citation_line.finish
             if citation_line.only?
               [get_line(citation_line.start, citation.page)]
             else
               get_paragraph(citation.page, citation_line.start).lines
             end
+          else
+            get_line_range(citation_line.start..citation_line.finish, citation.page)
           end
 
           Reading.new(lines, citation_line)
