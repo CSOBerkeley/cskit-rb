@@ -1,3 +1,8 @@
+== 1.2.1
+
+* Avoid adding an ending line number in Science and Health citations when the start
+  and end line are the same (i.e. they reference a paragraph).
+
 == 1.2.0
 
 * Fix several citation parsing issues.

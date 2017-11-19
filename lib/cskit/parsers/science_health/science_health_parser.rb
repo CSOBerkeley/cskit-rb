@@ -21,10 +21,10 @@ module CSKit
 
       Line = Struct.new(:start, :finish, :starter, :terminator) do
         def to_s
-          str = if finish
-            "#{start}-#{finish}"
-          else
+          str = if start == finish
             start.to_s
+          else
+            "#{start}-#{finish}"
           end
 
           str << ' (only)' if only?
