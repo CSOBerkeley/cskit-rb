@@ -63,6 +63,22 @@ describe BibleParser do
     end
   end
 
+  context 'single chapter, multiple verses' do
+    let(:citation_text) { 'I Corinthians 13:4-5, 13' }
+
+    it 'parses correctly' do
+      expect(parser.parse.to_hash).to eq({
+        book: 'I Corinthians', chapters: [{
+          chapter_number: 13, verses: [{
+            start: 4, finish: 5, starter: nil, terminator: nil
+          }, {
+            start: 13, finish: 13, starter: nil, terminator: nil
+          }]
+        }]
+      })
+    end
+  end
+
   context 'single chapter, verse range, starter fragment' do
     let(:citation_text) { 'Genesis 1:1-5 God' }
 

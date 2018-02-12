@@ -37,10 +37,7 @@ module CSKit
       attr_reader :citation_text, :token_stream, :current
 
       def eos?
-        token_stream.peek
-        false
-      rescue StopIteration
-        true
+        current.type == :eos
       end
 
       def eos_token
@@ -54,13 +51,13 @@ module CSKit
         end
 
         if eos?
-          if current.type == :eos
-            raise(ParserError, 'Unexpected end of input')
-          else
+          raise(ParserError, 'Unexpected end of input')
+        else
+          begin
+            @current = token_stream.next
+          rescue StopIteration
             @current = eos_token
           end
-        else
-          @current = token_stream.next
         end
       end
     end
